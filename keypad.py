@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import sys
 
 L1 = 16
 L2 = 20
@@ -23,6 +24,11 @@ GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 character_list = []
 
+def get_number():
+    phone = (''.join(character_list))
+    number = str(phone)
+    return number
+    
 def read_line(line, characters):
     character = 0
     GPIO.output(line, GPIO.HIGH)
@@ -35,39 +41,49 @@ def read_line(line, characters):
     
     if  character == 0:
         pass
+    
+    elif character == '*':
+        character_list.pop()
+        
+    elif character == '#':
+        print('Number entered successfully')
+        print('Phone number is ' + get_number())
+        
+        
     else:
         for i in range(1):
             print(character)
+            character_list.append(character)
+        
     GPIO.output(line, GPIO.LOW)
     return character
     
 def get_text():
     try:
-        while True:
+        if len(get_number()) < 10:
             read_line(L1, ["1","2","3"])
             read_line(L2, ["4","5","6"])
             read_line(L3, ["7","8","9"])
             read_line(L4, ["*","0","#"])
-            time.sleep(0.5)
-
+            time.sleep(0.2)
+        else:
+            print('Number entered successfully')
+            print('Phone number is ' + get_number())
+            sys.exit(2)
+            
     except KeyboardInterrupt:
         print("\nProgram is stopped")
+        sys.exit()
         
-    else:
-        pass
+while True:
+    get_text()
+ 
     
-def get_number():      
-    print(get_text())
-    character_list.append(get_text())
-    if get_text() == '*':
-        character_list.pop()
-    else:
-        pass
+    
+    
+    
 
-for g in range(10):
-    get_number()
+   
 
-if get_text() == '#':
-    print('Number entered successfully')
-number = str(character_list[ : ])
-print(number)
+
+
