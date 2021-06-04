@@ -67,7 +67,7 @@ def read_line(line, characters):
         display.lcd_clear()
         display.lcd_display_string("Success!", 1)
         time.sleep(2)
-        display.lcd_clear()
+        #display.lcd_clear()
         
         
     else:
@@ -99,7 +99,7 @@ def get_text():
         print("\nProgram is stopped")
         sys.exit()
         
-        
+       
 display.lcd_clear()
 display.lcd_display_string("    Welcome!", 1)
 time.sleep(2)
@@ -107,32 +107,53 @@ display.lcd_clear()
 display.lcd_display_string("Enter number:", 1)
 
 while True:
-    get_text()
-    if len(get_number()) < 11:
-        pass
-    elif character == '#':
-        #Capture entered character and display
-        print('Number entered successfully')
-        print('Phone number is ' + get_number())
-        display.lcd_clear()
-        display.lcd_display_string("Success!", 1)
-        time.sleep(2)
-        display.lcd_clear()
-        break
-    else:
-        break
-    
+    try:
+        get_text()
+        if len(get_number()) < 11:
+            pass
+         
+        elif character == '#':
+            #Capture entered character and display
+            print('Number entered successfully')
+            print('Phone number is ' + get_number())
+            display.lcd_clear()
+            display.lcd_display_string("Success!", 1)
+            time.sleep(2)
+            display.lcd_clear()
+            GPIO.cleanup()
+            break
         
-    
+        
+        elif character[-1] != '#':
+            print("Invalid entry!!")
+            get_text()
 
+        else:
+            break
  
-    
-    
-    
-    
-
-   
-
-
+    except:
+        print("Invalid entry")
+        '''
+        display.lcd_clear()
+        time.sleep(1)
+        display.lcd_display_string("Invalid entry", 1)
+        time.sleep(3)
+        display.lcd_clear()
+        display.lcd_display_string("Try again.", 1)
+        time.sleep(3)
+        display.lcd_clear()
+        GPIO.cleanup()
+        display.lcd_display_string("Enter again:", 1)
+        #get_number()
+        phone = str(''.join(character_list))
+        display.lcd_display_string(phone, 2)
+        if len(get_number()) < 11:
+            read_line(L1, ["1","2","3"])
+            read_line(L2, ["4","5","6"])
+            read_line(L3, ["7","8","9"])
+            read_line(L4, ["*","0","#"])
+            display.lcd_display_string(get_number(), 2)
+            time.sleep(0.2)
+         ''' 
 
 
